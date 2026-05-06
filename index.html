@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumière | Aesthetic Hair Studio</title>
+    
+    <!-- Google Fonts: Playfair Display (Serif/Elegant) & Inter (Sans/Clean) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#121212',       // Rich Black
+                        darkMuted: '#333333',  // Softer Black for reading
+                        light: '#FAFAFA',      // Soft Off-White
+                        surface: '#FFFFFF',    // Pure White for cards
+                        borderline: '#E5E5E5'  // Gentle border color
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 40px rgba(0, 0, 0, 0.03)',
+                        'hover': '0 10px 50px rgba(0, 0, 0, 0.06)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #FAFAFA;
+            color: #121212;
+            -webkit-font-smoothing: antialiased;
+        }
+        ::selection {
+            background-color: #121212;
+            color: #FAFAFA;
+        }
+        
+        /* Interactive Scroll Reveal Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        /* Custom subtle image hover */
+        .image-wrapper {
+            overflow: hidden;
+            border-radius: 1.5rem;
+        }
+        .image-wrapper img {
+            transition: transform 0.8s ease, filter 0.8s ease;
+        }
+        .image-wrapper:hover img {
+            transform: scale(1.05);
+            filter: grayscale(0%);
+        }
+        
+        /* Hide scrollbar for expanding cards if text is long */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="font-sans">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-light/80 backdrop-blur-xl transition-all duration-300 border-b border-transparent" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 md:px-12">
+            <div class="flex justify-between items-center h-20 md:h-24 transition-all">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center cursor-pointer group" onclick="window.scrollTo(0,0)">
+                    <span class="font-serif text-2xl tracking-widest font-medium text-dark group-hover:opacity-70 transition-opacity">Lumière.</span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-10 items-center">
+                    <a href="#about" class="text-sm font-medium text-darkMuted hover:text-dark transition-colors tracking-wide relative group">
+                        Tentang
+                        <span class="absolute -bottom-1 left-0 w-0 h-[1px] bg-dark transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#services" class="text-sm font-medium text-darkMuted hover:text-dark transition-colors tracking-wide relative group">
+                        Layanan
+                        <span class="absolute -bottom-1 left-0 w-0 h-[1px] bg-dark transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#gallery" class="text-sm font-medium text-darkMuted hover:text-dark transition-colors tracking-wide relative group">
+                        Galeri
+                        <span class="absolute -bottom-1 left-0 w-0 h-[1px] bg-dark transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#booking" class="bg-dark text-white px-7 py-3 rounded-full text-sm font-medium tracking-wide hover:bg-darkMuted hover:shadow-hover transition-all duration-300 flex items-center gap-2">
+                        Reservasi <i class="ph ph-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-dark focus:outline-none bg-surface p-2 rounded-full shadow-sm">
+                        <i class="ph ph-list text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-surface absolute w-full shadow-hover z-40 rounded-b-3xl">
+            <div class="flex flex-col px-6 py-8 space-y-4">
+                <a href="#about" class="py-3 text-sm font-medium tracking-wide text-darkMuted hover:text-dark border-b border-borderline">Tentang</a>
+                <a href="#services" class="py-3 text-sm font-medium tracking-wide text-darkMuted hover:text-dark border-b border-borderline">Layanan</a>
+                <a href="#gallery" class="py-3 text-sm font-medium tracking-wide text-darkMuted hover:text-dark border-b border-borderline">Galeri</a>
+                <a href="#booking" class="py-3 text-center bg-dark text-white rounded-full mt-4 text-sm font-medium tracking-wide">Reservasi Sekarang</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 md:pt-40 md:pb-32 px-6 md:px-12 max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12 md:gap-16 min-h-[90vh]">
+        
+        <!-- Text Content -->
+        <div class="w-full md:w-1/2 reveal">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface shadow-soft border border-borderline/50 mb-8">
+                <i class="ph-fill ph-sparkle text-dark"></i>
+                <span class="text-xs font-medium tracking-widest text-darkMuted uppercase">Premium Hair Studio</span>
+            </div>
+            
+            <h1 class="font-serif text-5xl md:text-6xl lg:text-7xl font-medium leading-[1.1] mb-6 text-dark">
+                Cantik itu <br>
+                <i class="font-light text-darkMuted">Natural &</i> <br>
+                Presisi.
+            </h1>
+            
+            <p class="text-base md:text-lg font-light text-darkMuted leading-relaxed max-w-md mb-10">
+                Temukan versi terbaik dari diri Anda di ruang yang didesain untuk ketenangan. Eksplorasi gaya rambut tanpa batas dengan elegan.
+            </p>
+            
+            <div class="flex items-center gap-6">
+                <a href="#booking" class="bg-dark text-white px-8 py-4 rounded-full text-sm font-medium tracking-wide hover:shadow-hover hover:-translate-y-1 transition-all duration-300">
+                    Amankan Jadwal
+                </a>
+                <a href="#services" class="flex items-center gap-2 text-sm font-medium text-darkMuted hover:text-dark transition-colors group">
+                    Eksplor Layanan 
+                    <i class="ph ph-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Image Content -->
+        <div class="w-full md:w-1/2 reveal delay-200">
+            <div class="relative w-full aspect-[4/5] md:aspect-[3/4] image-wrapper shadow-hover">
+                <img src="https://images.unsplash.com/photo-1620331311520-246422fd82f9?q=80&w=1000&auto=format&fit=crop" alt="Aesthetic Hair" class="w-full h-full object-cover grayscale-[30%]" style="object-position: center 20%;" />
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW INTERACTIVE Target Segment Section -->
+    <section class="py-24 bg-light border-y border-borderline/50 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto flex flex-col gap-12">
+            
+            <!-- Segment Intro -->
+            <div class="w-full text-center max-w-2xl mx-auto reveal">
+                <h2 class="font-serif text-3xl md:text-4xl font-medium text-dark mb-4">Dirancang Untuk Anda.</h2>
+                <p class="font-light text-darkMuted leading-relaxed mb-6">Ruang bagi mereka yang menghargai proses dan detail. Sentuh untuk melihat pengalaman yang sesuai dengan karakter Anda.</p>
+                <div class="w-12 h-px bg-dark mx-auto"></div>
+            </div>
+
+            <!-- Segment Interactive Flex Cards -->
+            <div class="flex flex-col lg:flex-row w-full h-auto lg:h-[480px] gap-4 reveal delay-100">
+                
+                <!-- Card 1 -->
+                <div class="group relative flex-1 lg:hover:flex-[2.2] transition-all duration-700 ease-[cubic-bezier(0.5,0,0,1)] rounded-3xl overflow-hidden cursor-pointer border border-borderline/50 bg-surface shadow-soft flex flex-col justify-end p-6 md:p-8">
+                    <!-- Hover Background Image -->
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1000&auto=format&fit=crop" alt="Profesional" class="absolute inset-0 w-full h-full object-cover opacity-0 lg:group-hover:opacity-40 transition-opacity duration-700 grayscale z-0" />
+                    <!-- Hover Gradient Overlay -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark/95 via-dark/40 to-transparent opacity-0 lg:group-hover:opacity-100 transition-opacity duration-700 z-0"></div>
+
+                    <!-- Content -->
+                    <div class="relative z-10 flex flex-col">
+                        <div class="w-12 h-12 rounded-full bg-light border border-borderline flex items-center justify-center mb-6 lg:group-hover:border-white/30 lg:group-hover:bg-white/10 lg:group-hover:backdrop-blur-md transition-all duration-700">
+                            <i class="ph-fill ph-briefcase text-2xl text-dark lg:group-hover:text-white transition-colors duration-700"></i>
+                        </div>
+                        <h4 class="font-serif text-xl font-medium text-dark lg:group-hover:text-white transition-colors duration-700 whitespace-nowrap">
+                            Profesional Sibuk
+                        </h4>
+                        
+                        <!-- Expandable Text Area -->
+                        <div class="grid grid-rows-[1fr] lg:grid-rows-[0fr] lg:group-hover:grid-rows-[1fr] transition-all duration-700 ease-[cubic-bezier(0.5,0,0,1)]">
+                            <div class="overflow-hidden no-scrollbar">
+                                <p class="text-sm font-light text-darkMuted lg:text-white/80 leading-relaxed pt-3 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-700 delay-100 min-w-[220px]">
+                                    Mencari momen 'me-time' yang efisien di tengah jadwal padat, dalam suasana studio yang privat, tenang, dan tidak berisik.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="group relative flex-1 lg:hover:flex-[2.2] transition-all duration-700 ease-[cubic-bezier(0.5,0,0,1)] rounded-3xl overflow-hidden cursor-pointer border border-borderline/50 bg-surface shadow-soft flex flex-col justify-end p-6 md:p-8">
+                    <img src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=1000&auto=format&fit=crop" alt="Eksplorator" class="absolute inset-0 w-full h-full object-cover opacity-0 lg:group-hover:opacity-40 transition-opacity duration-700 grayscale z-0" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark/95 via-dark/40 to-transparent opacity-0 lg:group-hover:opacity-100 transition-opacity duration-700 z-0"></div>
+
+                    <div class="relative z-10 flex flex-col">
+                        <div class="w-12 h-12 rounded-full bg-light border border-borderline flex items-center justify-center mb-6 lg:group-hover:border-white/30 lg:group-hover:bg-white/10 lg:group-hover:backdrop-blur-md transition-all duration-700">
+                            <i class="ph-fill ph-palette text-2xl text-dark lg:group-hover:text-white transition-colors duration-700"></i>
+                        </div>
+                        <h4 class="font-serif text-xl font-medium text-dark lg:group-hover:text-white transition-colors duration-700 whitespace-nowrap">
+                            Eksplorator Gaya
+                        </h4>
+                        <div class="grid grid-rows-[1fr] lg:grid-rows-[0fr] lg:group-hover:grid-rows-[1fr] transition-all duration-700 ease-[cubic-bezier(0.5,0,0,1)]">
+                            <div class="overflow-hidden no-scrollbar">
+                                <p class="text-sm font-light text-darkMuted lg:text-white/80 leading-relaxed pt-3 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-700 delay-100 min-w-[220px]">
+                                    Berani mencoba tren terbaru—dari *Wolf Cut* hingga pewarnaan *Balayage* mewah—tanpa takut dihakimi.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="group relative flex-1 lg:hover:flex-[2.2] transition-all duration-700 ease-[cubic-bezier(0.5,0,0,1)] rounded-3xl overflow-hidden cursor-pointer border border-borderline/50 bg-surface shadow-soft flex flex-col justify-end p-6 md:p-8">
+                    <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=1000&auto=format&fit=crop" alt="Pencari Kejujuran" class="absolute inset-0 w-full h-full object-cover opacity-0 lg:group-hover:opacity-40 transition-opacity duration-700 grayscale z-0" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark/95 via-dark/40 to-transparent opacity-0 lg:group-hover:opacity-100 transition-opacity duration-700 z-0"></div>
+
+                    <div class="relative z-10 flex flex-col">
+                        <div class="w-12 h-12 rounded-full bg-light border border-borderline flex items-center justify-center mb-6 lg:group-hover:border-white/30 lg:group-hover:bg-white/10 lg:group-hover:backdrop-blur-md transition-all duration-700">
+                            <i class="ph-fill ph-wallet text-2xl text-dark lg:group-hover:text-white transition-colors duration-700"></i>
+                        </div>
+                        <h4 class="font-serif text-xl font-medium text-dark lg:group-hover:text-white transition-colors duration-700 whitespace-nowrap">
+                            Pencari Kejujuran
+                        </h4>
+                        <div class="grid grid-rows-[1fr] lg:grid-rows-[0fr] lg:group-hover:grid-rows-[1fr] transition-all duration-700 ease-[cubic-bezier(0.5,0,0,1)]">
+                            <div class="overflow-hidden no-scrollbar">
+                                <p class="text-sm font-light text-darkMuted lg:text-white/80 leading-relaxed pt-3 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-700 delay-100 min-w-[220px]">
+                                    Menghargai transparansi. Anda mendapatkan kualitas salon premium dengan harga jujur yang jelas sejak awal konsultasi.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="group relative flex-1 lg:hover:flex-[2.2] transition-all duration-700 ease-[cubic-bezier(0.5,0,0,1)] rounded-3xl overflow-hidden cursor-pointer border border-borderline/50 bg-surface shadow-soft flex flex-col justify-end p-6 md:p-8">
+                    <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=1000&auto=format&fit=crop" alt="Self-Care" class="absolute inset-0 w-full h-full object-cover opacity-0 lg:group-hover:opacity-40 transition-opacity duration-700 grayscale z-0" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark/95 via-dark/40 to-transparent opacity-0 lg:group-hover:opacity-100 transition-opacity duration-700 z-0"></div>
+
+                    <div class="relative z-10 flex flex-col">
+                        <div class="w-12 h-12 rounded-full bg-light border border-borderline flex items-center justify-center mb-6 lg:group-hover:border-white/30 lg:group-hover:bg-white/10 lg:group-hover:backdrop-blur-md transition-all duration-700">
+                            <i class="ph-fill ph-sparkle text-2xl text-dark lg:group-hover:text-white transition-colors duration-700"></i>
+                        </div>
+                        <h4 class="font-serif text-xl font-medium text-dark lg:group-hover:text-white transition-colors duration-700 whitespace-nowrap">
+                            Self-Care Enthusiast
+                        </h4>
+                        <div class="grid grid-rows-[1fr] lg:grid-rows-[0fr] lg:group-hover:grid-rows-[1fr] transition-all duration-700 ease-[cubic-bezier(0.5,0,0,1)]">
+                            <div class="overflow-hidden no-scrollbar">
+                                <p class="text-sm font-light text-darkMuted lg:text-white/80 leading-relaxed pt-3 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-700 delay-100 min-w-[220px]">
+                                    Bagi Anda yang percaya bahwa merawat diri adalah sebuah investasi kebahagiaan, bukan sekadar kewajiban rutinan.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW Problem & Solution Section (Gen-Z Focused) -->
+    <section class="pb-24 bg-light border-b border-borderline/50 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+                <h2 class="font-serif text-3xl md:text-4xl font-medium text-dark mb-4">Kami Mendengar Anda.</h2>
+                <p class="font-light text-darkMuted leading-relaxed">Selamat tinggal pada pengalaman salon konvensional yang membuat cemas. Kami merumuskan standar baru untuk Anda.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 reveal delay-100">
+                <!-- Card 1 -->
+                <div class="bg-surface rounded-3xl p-8 border border-borderline/50 shadow-soft hover:shadow-hover hover:-translate-y-1 transition-all duration-500 group">
+                    <div class="mb-6 pb-6 border-b border-borderline/50">
+                        <div class="flex items-center gap-2 mb-3">
+                            <i class="ph-fill ph-x-circle text-darkMuted opacity-50"></i>
+                            <span class="text-[10px] font-medium uppercase tracking-widest text-darkMuted">Hair concerns</span>
+                        </div>
+                        <p class="text-sm font-light text-darkMuted leading-relaxed">Referensi tren visual dari Pinterest atau TikTok seringkali gagal dipahami oleh stylist konvensional.</p>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 mb-3">
+                            <i class="ph-fill ph-check-circle text-dark"></i>
+                            <span class="text-[10px] font-medium uppercase tracking-widest text-dark">Solusi Lumière</span>
+                        </div>
+                        <p class="font-serif text-lg text-dark leading-relaxed group-hover:text-darkMuted transition-colors">Stylist kami relevan dengan tren masa kini. Bawa moodboard Anda, kami terjemahkan dengan presisi.</p>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-surface rounded-3xl p-8 border border-borderline/50 shadow-soft hover:shadow-hover hover:-translate-y-1 transition-all duration-500 group delay-100">
+                    <div class="mb-6 pb-6 border-b border-borderline/50">
+                        <div class="flex items-center gap-2 mb-3">
+                            <i class="ph-fill ph-x-circle text-darkMuted opacity-50"></i>
+                            <span class="text-[10px] font-medium uppercase tracking-widest text-darkMuted">Hair concerns</span>
+                        </div>
+                        <p class="text-sm font-light text-darkMuted leading-relaxed">Cemas dihakimi, diceramahi, atau dikritik pedas saat kondisi rambut sedang rusak atau berantakan.</p>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 mb-3">
+                            <i class="ph-fill ph-check-circle text-dark"></i>
+                            <span class="text-[10px] font-medium uppercase tracking-widest text-dark">Solusi Lumière</span>
+                        </div>
+                        <p class="font-serif text-lg text-dark leading-relaxed group-hover:text-darkMuted transition-colors">100% No-Judgment Zone. Kami fokus pada solusi & pemulihan, bukan kritik yang menjatuhkan.</p>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-surface rounded-3xl p-8 border border-borderline/50 shadow-soft hover:shadow-hover hover:-translate-y-1 transition-all duration-500 group delay-200">
+                    <div class="mb-6 pb-6 border-b border-borderline/50">
+                        <div class="flex items-center gap-2 mb-3">
+                            <i class="ph-fill ph-x-circle text-darkMuted opacity-50"></i>
+                            <span class="text-[10px] font-medium uppercase tracking-widest text-darkMuted">Hair concerns</span>
+                        </div>
+                        <p class="text-sm font-light text-darkMuted leading-relaxed">Biaya perawatan tiba-tiba membengkak saat di kasir dengan <i class="italic">hidden fee</i> yang tidak terduga.</p>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 mb-3">
+                            <i class="ph-fill ph-check-circle text-dark"></i>
+                            <span class="text-[10px] font-medium uppercase tracking-widest text-dark">Solusi Lumière</span>
+                        </div>
+                        <p class="font-serif text-lg text-dark leading-relaxed group-hover:text-darkMuted transition-colors">Transparansi penuh. Harga pasti (fixed-price) selalu disepakati sejak awal konsultasi via WA.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Value Proposition (Bento Box Aesthetic) -->
+    <section id="about" class="py-20 md:py-32 px-6 md:px-12 bg-surface">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+                <h2 class="font-serif text-3xl md:text-4xl font-medium text-dark mb-4">Mengapa Lumière?</h2>
+                <p class="text-darkMuted font-light leading-relaxed">Selain memahami siapa Anda, kami juga memastikan pengalaman Anda di sini sempurna melalui 3 pilar utama kami.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-light p-10 rounded-3xl border border-borderline/50 shadow-soft hover:shadow-hover transition-all duration-300 group reveal">
+                    <div class="w-14 h-14 bg-surface rounded-2xl shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="ph ph-armchair text-2xl text-dark"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-medium text-dark mb-3">Ruang Tenang</h3>
+                    <p class="text-sm font-light text-darkMuted leading-relaxed">Desain interior minimalis yang menenangkan pikiran. Tempat sempurna untuk meregangkan otot yang lelah.</p>
+                </div>
+                
+                <!-- Card 2 -->
+                <div class="bg-light p-10 rounded-3xl border border-borderline/50 shadow-soft hover:shadow-hover transition-all duration-300 group reveal delay-100">
+                    <div class="w-14 h-14 bg-surface rounded-2xl shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="ph ph-scissors text-2xl text-dark"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-medium text-dark mb-3">Teknik Presisi</h3>
+                    <p class="text-sm font-light text-darkMuted leading-relaxed">Kapster berpengalaman dengan sentuhan detail. Mengerti tekstur dan bentuk wajah setiap individu.</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-light p-10 rounded-3xl border border-borderline/50 shadow-soft hover:shadow-hover transition-all duration-300 group reveal delay-200">
+                    <div class="w-14 h-14 bg-surface rounded-2xl shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="ph ph-tag text-2xl text-dark"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-medium text-dark mb-3">Harga Jujur</h3>
+                    <p class="text-sm font-light text-darkMuted leading-relaxed">Konsultasi terbuka di awal. Tidak ada biaya mengejutkan. Kami menjaga integritas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 md:py-32 px-6 md:px-12 max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 reveal">
+            <div>
+                <h2 class="font-serif text-4xl md:text-5xl font-medium text-dark mb-4">Layanan Kami.</h2>
+                <p class="font-light text-darkMuted">Kurasi perawatan terbaik untuk mahkota Anda.</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+            
+            <!-- Category 1 -->
+            <div class="bg-surface p-8 md:p-10 rounded-3xl shadow-soft border border-borderline/50 reveal">
+                <div class="flex items-center gap-4 mb-8">
+                    <span class="w-8 h-px bg-dark"></span>
+                    <h3 class="text-sm font-medium tracking-widest text-dark uppercase">Potong & Styling</h3>
+                </div>
+                
+                <div class="flex flex-col space-y-2">
+                    <div class="p-4 rounded-2xl hover:bg-light transition-colors group cursor-default flex justify-between items-center">
+                        <div>
+                            <h4 class="text-lg font-medium text-dark flex items-center gap-2">
+                                Signature Cut
+                                <i class="ph ph-arrow-right opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-darkMuted"></i>
+                            </h4>
+                            <p class="text-sm font-light text-darkMuted mt-1">Cuci, potong presisi, blow dry</p>
+                        </div>
+                        <span class="font-serif text-lg text-dark">85k</span>
+                    </div>
+                    
+                    <div class="p-4 rounded-2xl hover:bg-light transition-colors group cursor-default flex justify-between items-center">
+                        <div>
+                            <h4 class="text-lg font-medium text-dark flex items-center gap-2">
+                                Basic Trim
+                                <i class="ph ph-arrow-right opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-darkMuted"></i>
+                            </h4>
+                            <p class="text-sm font-light text-darkMuted mt-1">Rapikan ujung & bentuk</p>
+                        </div>
+                        <span class="font-serif text-lg text-dark">60k</span>
+                    </div>
+
+                    <div class="p-4 rounded-2xl hover:bg-light transition-colors group cursor-default flex justify-between items-center">
+                        <div>
+                            <h4 class="text-lg font-medium text-dark flex items-center gap-2">
+                                Catok / Styling
+                                <i class="ph ph-arrow-right opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-darkMuted"></i>
+                            </h4>
+                            <p class="text-sm font-light text-darkMuted mt-1">Lurus elegan atau ikal natural</p>
+                        </div>
+                        <span class="font-serif text-lg text-dark">50k</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category 2 -->
+            <div class="bg-surface p-8 md:p-10 rounded-3xl shadow-soft border border-borderline/50 reveal delay-100">
+                <div class="flex items-center gap-4 mb-8">
+                    <span class="w-8 h-px bg-dark"></span>
+                    <h3 class="text-sm font-medium tracking-widest text-dark uppercase">Color & Treatment</h3>
+                </div>
+                
+                <div class="flex flex-col space-y-2">
+                    <div class="p-4 rounded-2xl hover:bg-light transition-colors group cursor-default flex justify-between items-center">
+                        <div>
+                            <h4 class="text-lg font-medium text-dark flex items-center gap-2">
+                                Aesthetic Balayage
+                                <i class="ph ph-arrow-right opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-darkMuted"></i>
+                            </h4>
+                            <p class="text-sm font-light text-darkMuted mt-1">Gradasi warna mewah</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-[10px] text-darkMuted tracking-wider uppercase block">Start</span>
+                            <span class="font-serif text-lg text-dark">350k</span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 rounded-2xl hover:bg-light transition-colors group cursor-default flex justify-between items-center">
+                        <div>
+                            <h4 class="text-lg font-medium text-dark flex items-center gap-2">
+                                Inner Color / Peekaboo
+                                <i class="ph ph-arrow-right opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-darkMuted"></i>
+                            </h4>
+                            <p class="text-sm font-light text-darkMuted mt-1">Warna aksen berkarakter</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-[10px] text-darkMuted tracking-wider uppercase block">Start</span>
+                            <span class="font-serif text-lg text-dark">250k</span>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-2xl hover:bg-light transition-colors group cursor-default flex justify-between items-center">
+                        <div>
+                            <h4 class="text-lg font-medium text-dark flex items-center gap-2">
+                                Healing Spa & Detox
+                                <i class="ph ph-arrow-right opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-darkMuted"></i>
+                            </h4>
+                            <p class="text-sm font-light text-darkMuted mt-1">Pijat relaksasi + nutrisi rambut</p>
+                        </div>
+                        <span class="font-serif text-lg text-dark">120k</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Aesthetic Gallery (Interactive Grid) -->
+    <section id="gallery" class="py-24 md:py-32 bg-surface border-y border-borderline/50 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 reveal">
+                <h2 class="font-serif text-4xl md:text-5xl font-medium text-dark mb-4">Moodboard Visual</h2>
+                <p class="font-light text-darkMuted">Sentuh untuk melihat detail kehidupan di Lumière.</p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 auto-rows-[200px] md:auto-rows-[280px]">
+                
+                <!-- Img 1 -->
+                <div class="col-span-2 row-span-2 image-wrapper reveal relative group">
+                    <img src="https://i.pinimg.com/736x/51/e5/47/51e5477eeb6473a0ad9b73f1eb19c603.jpg" alt="Styling Session" class="w-full h-full object-cover grayscale-[40%]">
+                    <div class="absolute inset-0 bg-dark/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                        <span class="bg-white/90 text-dark px-6 py-2 rounded-full text-sm font-medium">Styling</span>
+                    </div>
+                </div>
+
+                <!-- Img 2 -->
+                <div class="col-span-1 row-span-1 image-wrapper reveal delay-100 relative group">
+                    <img src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover grayscale-[40%]">
+                    <div class="absolute inset-0 bg-dark/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                        <span class="bg-white/90 text-dark px-4 py-2 rounded-full text-xs font-medium">Space</span>
+                    </div>
+                </div>
+
+                <!-- Img 3 -->
+                <div class="col-span-1 row-span-1 md:row-span-2 image-wrapper reveal delay-200 relative group">
+                    <img src="https://i.pinimg.com/736x/b2/e0/09/b2e009aa668f2703fe17d18fb7a31dc6.jpg" class="w-full h-full object-cover grayscale-[40%]">
+                    <div class="absolute inset-0 bg-dark/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                        <span class="bg-white/90 text-dark px-4 py-2 rounded-full text-xs font-medium">Comfort</span>
+                    </div>
+                </div>
+
+                <!-- Img 4 -->
+                <div class="col-span-1 row-span-1 image-wrapper reveal delay-100 relative group">
+                    <img src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover grayscale-[40%]">
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Elevated CTA / Booking -->
+    <section id="booking" class="py-24 md:py-40 px-6 md:px-12">
+        <div class="max-w-5xl mx-auto bg-dark rounded-[2.5rem] p-10 md:p-20 text-center relative overflow-hidden shadow-hover reveal">
+            <!-- Decorative background blur -->
+            <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
+            <div class="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2"></div>
+            
+            <div class="relative z-10">
+                <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl font-medium mb-6 text-white">Waktunya Bersinar.</h2>
+                <p class="font-light text-white/70 mb-12 max-w-lg mx-auto text-lg">
+                    Mulai dengan konsultasi gratis. Kami bantu temukan perawatan terbaik untuk rambut Anda.
+                </p>
+                
+                <a href="https://wa.me/628817631003" target="_blank" class="inline-flex items-center gap-3 bg-white text-dark px-8 py-4 rounded-full font-medium tracking-wide hover:bg-light hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg">
+                    <i class="ph-fill ph-whatsapp-logo text-xl"></i> Reservasi WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-surface py-12 md:py-16 border-t border-borderline px-6 md:px-12">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            
+            <div class="text-center md:text-left">
+                <span class="font-serif text-2xl tracking-widest font-medium text-dark">Lumière.</span>
+                <p class="text-xs text-darkMuted mt-2">Aesthetic Hair Studio &copy; 2024</p>
+            </div>
+            
+            <div class="flex gap-8 text-sm font-medium text-darkMuted">
+                <a href="#" class="hover:text-dark transition-colors">Instagram</a>
+                <a href="#" class="hover:text-dark transition-colors">TikTok</a>
+                <a href="#" class="hover:text-dark transition-colors">Lokasi Peta</a>
+            </div>
+            
+            <div class="text-sm text-darkMuted bg-light px-4 py-2 rounded-full border border-borderline/50">
+                Open Daily: Selasa-Sabtu | 10:00 - 20:00
+            </div>
+            
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Smooth minimalist navbar appearance on scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('border-borderline', 'shadow-sm');
+                navbar.classList.remove('border-transparent');
+            } else {
+                navbar.classList.remove('border-borderline', 'shadow-sm');
+                navbar.classList.add('border-transparent');
+            }
+        });
+
+        // Simple Mobile Menu Toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileIcon = mobileBtn.querySelector('i');
+
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            if (mobileMenu.classList.contains('hidden')) {
+                mobileIcon.classList.replace('ph-x', 'ph-list');
+            } else {
+                mobileIcon.classList.replace('ph-list', 'ph-x');
+            }
+        });
+
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                mobileIcon.classList.replace('ph-x', 'ph-list');
+            });
+        });
+
+        // Intersection Observer for Scroll Animations (The Interactive Feel)
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Stop observing once revealed
+                }
+            });
+        };
+
+        const revealOptions = {
+            threshold: 0.15, // Trigger when 15% visible
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const revealObserver = new IntersectionObserver(revealCallback, revealOptions);
+
+        revealElements.forEach(el => {
+            revealObserver.observe(el);
+        });
+    </script>
+</body>
+</html>
